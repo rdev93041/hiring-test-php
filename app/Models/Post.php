@@ -35,4 +35,13 @@ class Post extends Model
     {
         return $this->belongsToMany(Tag::class);
     }
+
+    public function resolveRouteBindingQuery($query, $value, $field = null)
+    {
+        $query = parent::resolveRouteBindingQuery($query, $value, $field);
+
+        return request()->routeIs('posts.show')
+            ? $query->with('tags')
+            : $query;
+    }
 }
